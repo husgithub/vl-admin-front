@@ -12,3 +12,72 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+html, body, #root {
+  font-size: 12px;
+}
+
+.ant-table{
+  font-size: 12px;
+  line-height: 1;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  padding: 10px 10px;
+}
+
+/*自定义样式*/
+.ant-btn{
+  height: 28px;
+  font-size: 12px;
+}
+.ant-advanced-search-form {
+  padding: 12px 24px;
+  background: #fbfbfb;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.ant-advanced-search-form .ant-form-item {
+  display: flex;
+}
+
+.ant-advanced-search-form .ant-form-item-control-wrapper {
+  flex: 1;
+}
+
+.ant-form label {
+  font-size: 12px;
+}
+
+.ant-input{
+  height: 30px;
+  font-size: 12px;
+}
+
+/*select*/
+.ant-select {
+  font-size: 12px;
+}
+.ant-select-selection--single {
+  height: 30px;
+}
+.ant-select-dropdown{
+  font-size: 12px;
+}
+
+
+/*其他样式*/
+/*圆点start*/
+.dot {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  webkit-border-radius: 50px !important;
+  -moz-border-radius: 50px !important;
+  border-radius: 50px !important;
+  background: red;
+}
+
+.green {
+  background: green;
+}
