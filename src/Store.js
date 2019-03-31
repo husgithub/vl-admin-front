@@ -1,6 +1,8 @@
-import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import vm from './redux/modules/vm';
+import orgPopup from './redux/modules/OrgPopup';
+
 
 
 //import Perf from 'react-addons-perf'
@@ -9,7 +11,8 @@ import vm from './redux/modules/vm';
 //win.Perf = Perf
 
 const reducer = combineReducers({
-  vm:vm
+  vm: vm,
+  orgPopup: orgPopup
 });
 
 const middlewares = [thunk];

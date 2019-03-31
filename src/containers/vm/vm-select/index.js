@@ -5,6 +5,9 @@ import { Row, Col, Table, Form, Button, Input, Icon, Select } from 'antd';
 
 import { getList } from '../../../redux/modules/vm';
 
+import ComTable from '../../../components/table/ComTable';
+import OrgPopup from '../../../components/table/OrgPopup'
+import { changeVisible } from "../../../redux/modules/OrgPopup"
 import util from '../../../units/index'
 
 const Option = Select.Option;
@@ -53,29 +56,20 @@ const columns = [{
     }
 }];
 
-const pagination = {
-    current: 1,
-    pageSize: 10,
-    size: "small",
-    showSizeChanger: true,
-    showTotal: function (total) {
-        return `总共 ${total} 条`;
-    }
-}
 
-const req = {
-    innerCode: "",
-    nodeName2: "",
-    isOnline: "",
-    deviceStatus: ""
-}
-
-class VmSelect extends React.Component {
+class VmSelect extends ComTable {
 
     constructor(props) {
         super(props);
+        this.req = {
+            innerCode: "",
+            nodeName2: "",
+            isOnline: "",
+            deviceStatus: ""
+        }
         this.state = {
-            req: req,
+            showMore: this.showMore,
+            req: this.req,
             data: [],
             loading: false,
             selectedRowKeys: []
@@ -83,7 +77,7 @@ class VmSelect extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getList(this.state.req, pagination);
+        this.props.getList(this.state.req, this.pagination);
     }
 
     onChange = (pagination, filters, sorter) => {
@@ -118,18 +112,23 @@ class VmSelect extends React.Component {
     }
 
     query = () => {
-        this.props.getList(this.state.req, pagination);
+        this.props.getList(this.state.req, this.pagination);
     }
 
     reset = () => {
-        var req = { ...this.state.req };
-        for (let key in req) {
-            if (req[key]) {
-                req[key] = "";
-            }
-        }
+        super.reset();
+    }
+
+    selectOrg = () => {
+        this.props.showOrg(true);
+    }
+
+    //选择组织回调方法
+    selectOrgOkCB = (org) => {
+        console.log(org);
+        const req = this.state.req;
+        req.orgName = org.orgName;
         this.setState({ req: req });
-        pagination.current = 1;
     }
 
     render() {
@@ -150,7 +149,8 @@ class VmSelect extends React.Component {
                         </Col>
                         <Col span={6} key={1} >
                             <Form.Item label="运营组织：">
-                                <Input placeholder="运营组织" />
+                                <Input placeholder="运营组织" value={this.state.req.orgName} style={{ width: "180px" }} />
+                                <Button size="small" onClick={this.selectOrg} style={{ float: "right", top: "6px" }}>选择</Button>
                             </Form.Item>
                         </Col>
                         <Col span={6} key={2} >
@@ -188,9 +188,9 @@ class VmSelect extends React.Component {
                             <Button type="primary" onClick={this.query}>查询</Button>
                             <Button style={{ marginLeft: 8 }} onClick={this.reset}>
                                 重置
-                        </Button>
-                            <a style={{ marginLeft: 8, fontSize: 12 }}>
-                                展开 <Icon type={'up'} />
+                            </Button>
+                            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={super.toggle.bind(this)}>
+                                展开 <Icon type={this.state.showMore ? 'down' : 'up'} />
                             </a>
                         </Col>
                     </Row>
@@ -199,12 +199,15 @@ class VmSelect extends React.Component {
                     loading={this.props.loading}
                     pagination={this.props.pagination}
                     onChange={this.onChange} />
+                <OrgPopup selectOrgOkCB={this.selectOrgOkCB}></OrgPopup>
             </div>
         );
     }
 }
+
+//机器
 const mapStateToProps = (state) => {
-    var thatPagination = pagination;
+    var thatPagination = VmSelect.getPagination();
     if (state.vm.pagination) {
         thatPagination = state.vm.pagination;
     }
@@ -222,6 +225,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getList: (req, pagination) => {
             dispatch(getList(req, pagination));
+        },
+        showOrg: (visible) => {
+            dispatch(changeVisible(visible));
         }
     }
 };

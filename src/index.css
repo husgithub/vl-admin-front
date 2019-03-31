@@ -65,6 +65,16 @@ html, body, #root {
   font-size: 12px;
 }
 
+/*tree*/
+.ant-tree li{
+  padding: 2px 0;
+}
+.ant-tree{
+  font-size: 12px;
+}
+.ant-tree-checkbox-inner {
+  top: 2px;
+}
 
 /*其他样式*/
 /*圆点start*/
